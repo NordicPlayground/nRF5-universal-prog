@@ -34,10 +34,7 @@ from nrfjprog.model.perform_command import PerformCommand
 
 
 class SetupCommand(object):
-    """
-    Class that handles the pynrfjprog api instance, some shared arguments, and logging.
-
-    """
+    """Class that handles the pynrfjprog api instance, some shared arguments, and logging."""
 
     DEFAULT_JLINK_SPEED_KHZ = 5000
 
@@ -78,7 +75,8 @@ class SetupCommand(object):
 
         :param API api: An instance of api that has been initialized by the caller.
         """
-        assert (self.api is None), "The class's api property has already been initialized."
+        assert (
+            self.api is None), "The class's api property has already been initialized."
         self.api = api
         self._connect_to_emu()
 
@@ -88,9 +86,11 @@ class SetupCommand(object):
 
         """
         if self.args.snr and self.args.clockspeed:
-            self.api.connect_to_emu_with_snr(self.args.snr, self.args.clockspeed)
+            self.api.connect_to_emu_with_snr(
+                self.args.snr, self.args.clockspeed)
         elif self.args.snr:
-            self.api.connect_to_emu_with_snr(self.args.snr, self.DEFAULT_JLINK_SPEED_KHZ)
+            self.api.connect_to_emu_with_snr(
+                self.args.snr, self.DEFAULT_JLINK_SPEED_KHZ)
         elif self.args.clockspeed:
             self.api.connect_to_emu_without_snr(self.args.clockspeed)
         else:
@@ -127,6 +127,7 @@ class JLink(PerformCommand):
     """
 
     """
+
     def erase(self, args):
         nrf = SetupCommand(args)
 
@@ -149,7 +150,9 @@ class JLink(PerformCommand):
     def ids(self, args):
         nrf = SetupCommand(args, do_not_initialize_api=True)
 
-        api = API.API('NRF52') # Device family type arbitrary since we are not connecting to a device. Use NRF52 by default.
+        # Device family type arbitrary since we are not connecting to a device.
+        # Use NRF52 by default.
+        api = API.API('NRF52')
         api.open()
 
         ids = api.enum_emu_snr()
@@ -169,21 +172,36 @@ class JLink(PerformCommand):
     def memwr(self, args):
         nrf = SetupCommand(args)
 
-        nrf.api.write_u32(args.addr, args.val, self.is_flash_addr(args.addr, nrf.device))
+        nrf.api.write_u32(
+            args.addr,
+            args.val,
+            self.is_flash_addr(
+                args.addr,
+                nrf.device))
 
         nrf.cleanup()
 
     def pinresetenable(self, args):
         nrf = SetupCommand(args)
 
-        assert(nrf.device_version[:5] != 'NRF51'), "Enabling pin reset is not a valid command for nRF51 devices."
+        assert(
+            nrf.device_version[
+                :5] != 'NRF51'), "Enabling pin reset is not a valid command for nRF51 devices."
 
         uicr_pselreset0_addr = 0x10001200
         uicr_pselreset1_addr = 0x10001204
-        uicr_pselreset_21_connect = 0x15 # Writes the CONNECT and PIN bit fields (reset is connected and GPIO pin 21 is selected as the reset pin).
+        # Writes the CONNECT and PIN bit fields (reset is connected and GPIO
+        # pin 21 is selected as the reset pin).
+        uicr_pselreset_21_connect = 0x15
 
-        nrf.api.write_u32(uicr_pselreset0_addr, uicr_pselreset_21_connect, True)
-        nrf.api.write_u32(uicr_pselreset1_addr, uicr_pselreset_21_connect, True)
+        nrf.api.write_u32(
+            uicr_pselreset0_addr,
+            uicr_pselreset_21_connect,
+            True)
+        nrf.api.write_u32(
+            uicr_pselreset1_addr,
+            uicr_pselreset_21_connect,
+            True)
         nrf.api.sys_reset()
 
         nrf.cleanup()
@@ -213,7 +231,9 @@ class JLink(PerformCommand):
 
             if args.verify:
                 read_data = nrf.api.read(start_addr, len(data))
-                assert (self.byte_lists_equal(data, read_data)), 'Verify failed. Data readback from memory does not match data written.'
+                assert (
+                    self.byte_lists_equal(
+                        data, read_data)), 'Verify failed. Data readback from memory does not match data written.'
 
         self._reset(nrf, args)
 
@@ -233,7 +253,10 @@ class JLink(PerformCommand):
         nrf = SetupCommand(args)
 
         for reg in API.CpuRegister:
-            print('{}: {}'.format(reg.name, hex(nrf.api.read_cpu_register(reg))))
+            print(
+                '{}: {}'.format(
+                    reg.name, hex(
+                        nrf.api.read_cpu_register(reg))))
 
         nrf.cleanup()
 
@@ -244,15 +267,27 @@ class JLink(PerformCommand):
             with open(args.file, 'w') as file:
                 if args.readcode or not (args.readuicr or args.readram):
                     file.write('----------Code FLASH----------\n\n')
-                    self.output_data(nrf.device.flash_start, nrf.api.read(nrf.device.flash_start, nrf.device.flash_size), file)
+                    self.output_data(
+                        nrf.device.flash_start,
+                        nrf.api.read(
+                            nrf.device.flash_start,
+                            nrf.device.flash_size),
+                        file)
                     file.write('\n\n')
                 if args.readuicr:
                     file.write('----------UICR----------\n\n')
-                    self.output_data(nrf.device.uicr_start, nrf.api.read(nrf.device.uicr_start, nrf.device.page_size), file)
+                    self.output_data(
+                        nrf.device.uicr_start,
+                        nrf.api.read(
+                            nrf.device.uicr_start,
+                            nrf.device.page_size),
+                        file)
                     file.write('\n\n')
                 if args.readram:
                     file.write('----------RAM----------\n\n')
-                    self.output_data(nrf.device.ram_start, nrf.api.read(nrf.device.ram_start, nrf.device.ram_size), file)
+                    self.output_data(
+                        nrf.device.ram_start, nrf.api.read(
+                            nrf.device.ram_start, nrf.device.ram_size), file)
         except IOError as error:
             print("{}.".format(error))
 
@@ -279,9 +314,9 @@ class JLink(PerformCommand):
     def run(self, args):
         nrf = SetupCommand(args)
 
-        if args.pc != None and args.sp != None:
+        if args.pc is not None and args.sp is not None:
             nrf.api.run(args.pc, args.sp)
-        elif args.pc != None or args.sp != None:
+        elif args.pc is not None or args.sp is not None:
             assert(False), 'Both the PC and the SP must be specified.'
         else:
             nrf.api.go()
@@ -300,7 +335,8 @@ class JLink(PerformCommand):
             data = hex_file.tobinarray(start=start_addr, size=size)
             read_data = nrf.api.read(start_addr, size)
 
-            assert (self.byte_lists_equal(data, read_data)), 'Verify failed. Data readback from memory does not match data written.'
+            assert (self.byte_lists_equal(data, read_data)
+                    ), 'Verify failed. Data readback from memory does not match data written.'
 
         nrf.cleanup()
 

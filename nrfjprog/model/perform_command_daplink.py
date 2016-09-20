@@ -39,7 +39,7 @@ from nrfjprog.model.perform_command import PerformCommand
 
 @enum.unique
 class Memory_Access_Mode(enum.IntEnum):
-    READ_ENABLE  = 0
+    READ_ENABLE = 0
     WRITE_ENABLE = 1
     ERASE_ENABLE = 2
 
@@ -48,6 +48,7 @@ class DapLink(PerformCommand):
     """
 
     """
+
     def erase(self, args):
         board = self._setup()
         board.flash.init()
@@ -76,7 +77,8 @@ class DapLink(PerformCommand):
     def memwr(self, args):
         board = self._setup()
 
-        nRF5_device = device.NRF5xDevice('NRF52_FP1') # TODO: This should not be hard-coded.
+        # TODO: This should not be hard-coded.
+        nRF5_device = device.NRF5xDevice('NRF52_FP1')
 
         if self.is_flash_addr(args.addr, nRF5_device):
             self._config_NVMC(board.target, Memory_Access_Mode.WRITE_ENABLE)
@@ -93,7 +95,9 @@ class DapLink(PerformCommand):
 
         uicr_pselreset0_addr = 0x10001200
         uicr_pselreset1_addr = 0x10001204
-        uicr_pselreset_21_connect = 0x15 # Writes the CONNECT and PIN bit fields (reset is connected and GPIO pin 21 is selected as the reset pin).
+        # Writes the CONNECT and PIN bit fields (reset is connected and GPIO
+        # pin 21 is selected as the reset pin).
+        uicr_pselreset_21_connect = 0x15
 
         board.target.write32(uicr_pselreset0_addr, uicr_pselreset_21_connect)
         board.target.write32(uicr_pselreset1_addr, uicr_pselreset_21_connect)
@@ -109,11 +113,16 @@ class DapLink(PerformCommand):
         tmp_bin_file = 'tmp.bin'
 
         if args.sectorsanduicrerase:
-            self._erase_uicr(board.target) # TODO: May not be needed if pyOCD does this. Double check before removing.
+            # TODO: May not be needed if pyOCD does this. Double check before
+            # removing.
+            self._erase_uicr(board.target)
 
         hex_file = IntelHex(args.file)
         hex_file.tobinfile(tmp_bin_file)
-        board.flash.flashBinary(tmp_bin_file, chip_erase=args.eraseall, fast_verify=args.verify)
+        board.flash.flashBinary(
+            tmp_bin_file,
+            chip_erase=args.eraseall,
+            fast_verify=args.verify)
 
         if args.debugreset or args.pinreset or args.systemreset:
             board.target.reset()
@@ -132,23 +141,39 @@ class DapLink(PerformCommand):
 
     def readtofile(self, args):
         board = self._setup()
-        nRF5_device = device.NRF5xDevice('NRF52_FP1') # TODO: This should not be hard-coded.
+        # TODO: This should not be hard-coded.
+        nRF5_device = device.NRF5xDevice('NRF52_FP1')
 
         try:
             with open(args.file, 'w') as file:
                 if args.readcode or not (args.readuicr or args.readram):
                     file.write('----------Code FLASH----------\n\n')
-                    self.output_data(nRF5_device.flash_start, board.target.readBlockMemoryAligned32(nRF5_device.flash_start, nRF5_device.flash_size), file)
+                    self.output_data(
+                        nRF5_device.flash_start,
+                        board.target.readBlockMemoryAligned32(
+                            nRF5_device.flash_start,
+                            nRF5_device.flash_size),
+                        file)
                     file.write('\n\n')
                 if args.readuicr:
                     file.write('----------UICR----------\n\n')
-                    self.output_data(nRF5_device.uicr_start, board.target.readBlockMemoryAligned32(nRF5_device.uicr_start, nRF5_device.page_size), file)
+                    self.output_data(
+                        nRF5_device.uicr_start,
+                        board.target.readBlockMemoryAligned32(
+                            nRF5_device.uicr_start,
+                            nRF5_device.page_size),
+                        file)
                     file.write('\n\n')
                 if args.readram:
                     file.write('----------RAM----------\n\n')
-                    self.output_data(nRF5_device.ram_start, board.target.readBlockMemoryAligned32(nRF5_device.ram_start, nRF5_device.ram_size), file)
+                    self.output_data(
+                        nRF5_device.ram_start,
+                        board.target.readBlockMemoryAligned32(
+                            nRF5_device.ram_start,
+                            nRF5_device.ram_size),
+                        file)
         except IOError as error:
-            pass # TODO: do something...
+            pass  # TODO: do something...
 
     def recover(self, args):
         print('WARNING: This will not actually unlock the chip right now, just does a full erase.')
@@ -174,9 +199,11 @@ class DapLink(PerformCommand):
             size = end_addr - start_addr
 
             data = hex_file.tobinarray(start=start_addr, size=size)
-            read_data = board.target.readBlockMemoryUnaligned8(start_addr, size)
+            read_data = board.target.readBlockMemoryUnaligned8(
+                start_addr, size)
 
-            assert (self.byte_lists_equal(data, read_data)), 'Verify failed. Data readback from memory does not match data written.'
+            assert (self.byte_lists_equal(data, read_data)
+                    ), 'Verify failed. Data readback from memory does not match data written.'
 
     def version(self, args):
         print('nRFjprog version: {}'.format(nrfjprog_version.NRFJPROG_VERSION))

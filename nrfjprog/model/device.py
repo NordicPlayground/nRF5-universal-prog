@@ -31,35 +31,35 @@ Device specific info.
 
 """
 
-FLASH_SIZE = {'NRF52_FP1'      : 0x80000,
-              'NRF52_FP1_ENGB' : 0x80000,
-              'NRF52_FP1_ENGA' : 0x80000,
-              'NRF51_XLR3LC'   : 0x40000,
-              'NRF51_XLR3P'    : 0x40000,
-              'NRF51_L3'       : 0x20000,
-              'NRF51_XLR3'     : 0x40000,
-              'NRF51_XLR2'     : 0x40000,
-              'NRF51_XLR1'     : 0x40000}
+FLASH_SIZE = {'NRF52_FP1': 0x80000,
+              'NRF52_FP1_ENGB': 0x80000,
+              'NRF52_FP1_ENGA': 0x80000,
+              'NRF51_XLR3LC': 0x40000,
+              'NRF51_XLR3P': 0x40000,
+              'NRF51_L3': 0x20000,
+              'NRF51_XLR3': 0x40000,
+              'NRF51_XLR2': 0x40000,
+              'NRF51_XLR1': 0x40000}
 
-RAM_SIZE = {'NRF52_FP1'      : 0x10000,
-            'NRF52_FP1_ENGB' : 0x8000,
-            'NRF52_FP1_ENGA' : 0x4000,
-            'NRF51_XLR3LC'   : 0x4000,
-            'NRF51_XLR3P'    : 0x8000,
-            'NRF51_L3'       : 0x4000,
-            'NRF51_XLR3'     : 0x4000,
-            'NRF51_XLR2'     : 0x4000,
-            'NRF51_XLR1'     : 0x4000}
+RAM_SIZE = {'NRF52_FP1': 0x10000,
+            'NRF52_FP1_ENGB': 0x8000,
+            'NRF52_FP1_ENGA': 0x4000,
+            'NRF51_XLR3LC': 0x4000,
+            'NRF51_XLR3P': 0x8000,
+            'NRF51_L3': 0x4000,
+            'NRF51_XLR3': 0x4000,
+            'NRF51_XLR2': 0x4000,
+            'NRF51_XLR1': 0x4000}
 
-PAGE_SIZE = {'NRF52_FP1'      : 0x1000,
-             'NRF52_FP1_ENGB' : 0x1000,
-             'NRF52_FP1_ENGA' : 0x1000,
-             'NRF51_XLR3LC'   : 0x400,
-             'NRF51_XLR3P'    : 0x400,
-             'NRF51_L3'       : 0x400,
-             'NRF51_XLR3'     : 0x400,
-             'NRF51_XLR2'     : 0x400,
-             'NRF51_XLR1'     : 0x400}
+PAGE_SIZE = {'NRF52_FP1': 0x1000,
+             'NRF52_FP1_ENGB': 0x1000,
+             'NRF52_FP1_ENGA': 0x1000,
+             'NRF51_XLR3LC': 0x400,
+             'NRF51_XLR3P': 0x400,
+             'NRF51_L3': 0x400,
+             'NRF51_XLR3': 0x400,
+             'NRF51_XLR2': 0x400,
+             'NRF51_XLR1': 0x400}
 
 
 class NRF5xDevice(object):

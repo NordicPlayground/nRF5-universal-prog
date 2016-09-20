@@ -39,28 +39,61 @@ class OpenOCD(PerformCommand):
 
     Probably will need --family arugment to determine which target/nrf5x.cfg script to use - until this is shared in openOCD.
     """
+
     def _create_shell_command(self, command):
-        return ['sudo', 'openocd', '-f', 'interface/cmsis-dap.cfg', '-f', 'target/nrf52.cfg', '-c', 'init', '-c', command, '-c', 'exit']
+        return [
+            'sudo',
+            'openocd',
+            '-f',
+            'interface/cmsis-dap.cfg',
+            '-f',
+            'target/nrf52.cfg',
+            '-c',
+            'init',
+            '-c',
+            command,
+            '-c',
+            'exit']
 
     def erase(self, args):
         command = 'nrf52 mass_erase'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def halt(self, args):
         command = 'halt'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def ids(self, args):
         command = 'targets'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def memrd(self, args):
         command = 'mdw ' + str(args.addr) + ' ' + str(args.length)
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def memwr(self, args):
         """
@@ -69,30 +102,60 @@ class OpenOCD(PerformCommand):
         """
         command = 'mww ' + str(args.addr) + ' ' + str(args.val) + ' ' + str(1)
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def program(self, args):
         command = 'program ' + args.file + ' verify reset'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def readregs(self, args):
         command = 'reg'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def reset(self, args):
         command = 'reset'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def run(self, args):
         command = 'resume ' + str(args.pc)
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)
 
     def version(self, args):
         print('nRFjprog version: {}'.format(nrfjprog_version.NRFJPROG_VERSION))
         command = 'version'
         shell_command = self._create_shell_command(command)
-        subprocess.check_call(shell_command, stdin=None, stdout=None, stderr=None, shell=False)
+        subprocess.check_call(
+            shell_command,
+            stdin=None,
+            stdout=None,
+            stderr=None,
+            shell=False)

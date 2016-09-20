@@ -27,48 +27,42 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 """
-This module receives user input from __main__.py and performs the operation via JLink (pynrfjprog) or DAP-Link/CMSIS-DAP (pyOCD).
+This module receives user input from __main__.py and performs the operation via JLink (pynrfjprog), DAP-Link/CMSIS-DAP (pyOCD) or openOCD.
 
 """
 
+
 class PerformCommand(object):
-    """
-    Base class.
+    """Base class."""
 
-    """
     def byte_lists_equal(self, data, read_data):
-        """
-
-        """
+        """Return True if two lists of bytes are identical"""
         for i in xrange(len(data)):
             if data[i] != read_data[i]:
                 return False
         return True
 
     def is_flash_addr(self, addr, device):
-        """
-
-        """
-        return addr in range(device.flash_start, device.flash_end) or addr in range(device.uicr_start, device.uicr_end)
+        """Return True if addr is in a FLASH region, False if not."""
+        return addr in range(
+            device.flash_start,
+            device.flash_end) or addr in range(
+            device.uicr_start,
+            device.uicr_end)
 
     def log(self, args, msg):
-        """
-
-        """
+        """Print log to stdout unless user has specified --quiet."""
         if args.quiet:
             pass
         else:
             print(msg)
 
     def output_data(self, addr, byte_array, file=None):
-        """
-        Read data from memory and output it to the console or file with the following format: ADDRESS: WORD\n
-
-        """
+        """Read data from memory and output it to the console or file with the following format: ADDRESS: WORD\n"""
         index = 0
 
         while index < len(byte_array):
-            string = "{}: {}".format(hex(addr), byte_array[index : index + 4])
+            string = "{}: {}".format(hex(addr), byte_array[index: index + 4])
             if file:
                 file.write(string + '\n')
             else:

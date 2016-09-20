@@ -33,8 +33,10 @@ USAGE:
     python setup.py install or python setup.py bdist_egg (to create a Python egg)
 """
 
+import fnmatch
 import os
 from setuptools import setup, find_packages
+import subprocess
 import sys
 
 from nrfjprog import nrfjprog_version
@@ -43,19 +45,20 @@ from nrfjprog import nrfjprog_version
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 def read_requirements(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).readlines()
 
 
 setup(
-    name ='nrfjprog',
-    version = nrfjprog_version.NRFJPROG_VERSION,
-    description = 'The nrfjprog command line tool implemented in Python.',
+    name='nrfjprog',
+    version=nrfjprog_version.NRFJPROG_VERSION,
+    description='The nrfjprog command line tool implemented in Python.',
     long_description=read('README.md'),
-    url = 'https://github.com/NordicSemiconductor/nrfjprog',
-    author = 'Nordic Semiconductor ASA',
-    license = 'BSD',
-    classifiers = [
+    url='https://github.com/NordicSemiconductor/nrfjprog',
+    author='Nordic Semiconductor ASA',
+    license='BSD',
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Operating System :: MacOS',
@@ -69,8 +72,19 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5'
     ],
-    keywords = 'nRF5 nRF51 nRF52 nrfjprog pynrfjprog pyOCD Nordic Semiconductor SEGGER JLink',
-    install_requires = read_requirements('requirements.txt'),
-    packages = find_packages(exclude=["tests.*", "tests"]),
+    keywords='nRF5 nRF51 nRF52 nrfjprog pynrfjprog pyOCD Nordic Semiconductor SEGGER JLink',
+    install_requires=read_requirements('requirements.txt'),
+    packages=find_packages(exclude=["tests.*", "tests"]),
     include_package_data=False
 )
+
+"""if __name__ == '__main__':
+    print('#### Auto formatting all Python code in nRFTools according to PEP 8...')
+    matches = []
+    for root, dirnames, filenames in os.walk(
+            os.path.dirname(os.path.realpath(__file__))):
+        for filename in fnmatch.filter(filenames, '*.py'):
+            matches.append(os.path.join(root, filename))
+    for match in matches:
+        subprocess.check_call(
+            ["autopep8", "--in-place", "--aggressive", "--aggressive", match])"""
