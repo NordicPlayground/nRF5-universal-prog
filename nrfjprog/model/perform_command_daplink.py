@@ -30,7 +30,7 @@ import enum
 from intelhex import IntelHex
 import os
 from pyOCD.board import MbedBoard
-from pyOCD.target import cortex_m
+from pyOCD.coresight import cortex_m
 
 from nrfjprog import nrfjprog_version
 from nrfjprog.model import device
