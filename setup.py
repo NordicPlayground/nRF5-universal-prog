@@ -33,10 +33,10 @@ USAGE:
     python setup.py install or python setup.py bdist_egg (to create a Python egg)
 """
 
-import fnmatch
+#import fnmatch
 import os
 from setuptools import setup, find_packages
-import subprocess
+#import subprocess
 import sys
 
 from nrfjprog import nrfjprog_version
@@ -51,11 +51,11 @@ def read_requirements(fname):
 
 
 setup(
-    name='nrfjprog',
+    name='nRF5-universal-prog',
     version=nrfjprog_version.NRFJPROG_VERSION,
-    description='The nrfjprog command line tool implemented in Python.',
+    description='The nRF5-universal-prog command line tool implemented in Python.',
     long_description=read('README.md'),
-    url='https://github.com/NordicSemiconductor/nrfjprog',
+    url='https://github.com/NordicSemiconductor/nRF5-universal-prog',
     author='Nordic Semiconductor ASA',
     license='BSD',
     classifiers=[
