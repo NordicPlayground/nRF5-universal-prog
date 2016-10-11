@@ -77,6 +77,7 @@ class Nrfjprog(object):
         @param boolean        connects: If this command connects to the emulator (debugger) and should have the option to set the clock speed/serial number.
         """
         self._add_daplink_argument(parser)
+        self._add_jlink_arm_dll_path_argument(parser)
         self._add_openocd_argument(parser)
         self._add_quiet_argument(parser)
 
@@ -343,6 +344,11 @@ class Nrfjprog(object):
             '--file',
             help='The hex file to be used in this operation.',
             required=True)
+
+    def _add_jlink_arm_dll_path_argument(self, parser):
+        parser.add_argument(
+            '--jlink_arm_dll_path',
+            help='''Absolute path to JLink_ARM.dll to use instead of looking in the default SEGGER installation directory.''')
 
     def _add_length_argument(self, parser):
         parser.add_argument(

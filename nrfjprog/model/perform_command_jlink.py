@@ -103,7 +103,11 @@ class SetupCommand(object):
         :param  String device_family_guess: The device family type to try.
         :return Boolean: If device_family_guess was correct and we initialized everything successfully.
         """
-        self.api = API.API(device_family_guess)
+        if self.args.jlink_arm_dll_path:
+            self.api = API.API(device_family_guess,
+                jlink_arm_dll_path=self.args.jlink_arm_dll_path)
+        else:
+            self.api = API.API(device_family_guess)
         self.api.open()
         self._connect_to_emu()
 
