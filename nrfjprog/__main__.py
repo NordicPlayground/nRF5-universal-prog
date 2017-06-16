@@ -298,7 +298,8 @@ class Nrfjprog(object):
         'NRF51_L3',
         'NRF51_XLR3',
         'NRF51_XLR2',
-        'NRF51_XLR1']
+        'NRF51_XLR1',
+        'NRF51xxx_xxAC_REV3']
 
     def _add_deviceversion_argument(self, parser):
         parser.add_argument(
