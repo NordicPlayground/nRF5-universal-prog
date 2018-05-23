@@ -55,7 +55,7 @@ setup(
     version=nrfjprog_version.NRFJPROG_VERSION,
     description='The nRF5-universal-prog command line tool implemented in Python.',
     long_description=read('README.md'),
-    url='https://github.com/NordicSemiconductor/nRF5-universal-prog',
+    url='https://github.com/NordicPlayground/nRF5-universal-prog',
     author='Nordic Semiconductor ASA',
     license='BSD',
     classifiers=[
