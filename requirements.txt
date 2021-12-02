@@ -1,4 +1,4 @@
 argparse
 intelhex
 pynrfjprog
-git+git://github.com/mbedmicro/pyOCD.git
+pyocd
